@@ -1,4 +1,5 @@
-import { diffLines, Change } from "diff";
+import { diffLines } from "diff";
+import type { Change } from "diff";
 import { serializeToToon, type ToonOptions } from "./converter";
 
 export interface DiffResult {
