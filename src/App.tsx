@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useMemo, memo } from 'react';
+import { useState, useEffect, useMemo, memo } from 'react';
 import {
   Zap,
   Check,
@@ -134,7 +134,10 @@ function App() {
             {/* <div className="flex items-center gap-8"> */}
             <div className="header-brand">
               <Zap className="header-brand-icon fill-current" />
-              <span className="brand-font">ToonEngine</span>
+              <div className="flex flex-col">
+                <span className="brand-font leading-none">ToonEngine</span>
+                <span className="text-[8px] font-black text-emerald-400/80 uppercase tracking-widest mt-0.5">Live CI Pipeline</span>
+              </div>
             </div>
             {/* </div> */}
 
