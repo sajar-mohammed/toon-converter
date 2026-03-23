@@ -1,73 +1,85 @@
-# React + TypeScript + Vite
+# ToonEngine: Token-Oriented Object Notation
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+![Version](https://img.shields.io/badge/version-3.1.2-indigo)
+![Status](https://img.shields.io/badge/status-stable-emerald)
+![License](https://img.shields.io/badge/license-MIT-blue)
 
-Currently, two official plugins are available:
+ToonEngine is a high-performance transformer designed to optimize JSON payloads for Large Language Model (LLM) token efficiency. By utilizing **TOON (Token-Oriented Object Notation)**, you can reduce token consumption by up to **30-50%**, leading to faster inference times and significantly lower API costs.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## 🚀 Key Features
 
-## React Compiler
+- **TOON Serialization**: A minimalist, key-folded, and tabular-aware notation format optimized for LLM tokenizers (tiktoken).
+- **Token Efficiency Calculator**: Real-time cost and savings projection for models like GPT-4o, Claude 3.5 Sonnet, and Gemini 1.5 Pro.
+- **Differential Workspace**: Side-by-side comparison between JSON and TOON with visual diff highlighting and token delta tracking.
+- **Premium Studio UI**: A cinematic, developer-first interface built for high-scale LLM pipeline optimization.
+- **Bidirectional Conversion**: Seamlessly convert between JSON and TOON with built-in validation.
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+## 🛠️ Tech Stack
 
-## Expanding the ESLint configuration
+- **Framework**: React 18 + Vite
+- **Language**: TypeScript
+- **Styling**: Tailwind CSS + Framer Motion (Glassmorphism & Micro-animations)
+- **Tokenization**: `js-tiktoken` for accurate token counts across different models.
+- **Diff Engine**: `react-diff-viewer-continued`
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+## 📦 Getting Started
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+### Prerequisites
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
+- Node.js (v18 or higher)
+- npm or yarn
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+### Installation
+
+1. Clone the repository:
+   ```bash
+   git clone https://github.com/sajar-mohammed/toon-converter.git
+   cd toon-converter
+   ```
+
+2. Install dependencies:
+   ```bash
+   npm install
+   ```
+
+3. Start the development server:
+   ```bash
+   npm run dev
+   ```
+
+## 📖 How TOON Works
+
+TOON reduces token overhead through several key optimizations:
+
+1. **Key Folding**: Combines nested object keys (e.g., `user.settings.theme`) to reduce structural depth tokens.
+2. **Tabular Arrays**: Identifies uniform object arrays and represents them as headers followed by comma-separated values, eliminating redundant key-value pairs.
+3. **Minimalist Delimiters**: Replaces heavy JSON syntax (`{`, `"`, `}`, `: `) with optimized delimiters that use fewer tokens in the BPE (Byte Pair Encoding) space.
+
+### Example
+
+**JSON:**
+```json
+[
+  { "id": 1, "name": "Alice", "role": "admin" },
+  { "id": 2, "name": "Bob", "role": "user" }
+]
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
-
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
-
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+**TOON:**
+```text
+[2]{id,name,role}:
+  1,Alice,admin
+  2,Bob,user
 ```
+
+## 🤝 Contributing
+
+Contributions are welcome! Please feel free to submit a Pull Request.
+
+## 📄 License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+---
+
+Built with ❤️ by [Sajar Mohammed](https://github.com/sajar-mohammed)
