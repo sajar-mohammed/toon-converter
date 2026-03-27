@@ -35,7 +35,12 @@ export function serializeToToon(obj: any, options: ToonOptions = {}): string {
         const keys = Object.keys(first);
         const header = `${prefix}[${data.length}]{${keys.join(",")}}:`;
         const rows = data.map(item => {
-          return " ".repeat((depth + 1) * indent) + keys.map(k => item[k]).join(delimiter);
+          return " ".repeat((depth + 1) * indent) +
+            keys.map(k => {
+              const val = item[k];
+              if (isObject(val) || Array.isArray(val)) return JSON.stringify(val);
+              return val;
+            }).join(delimiter);
         });
         return [header, ...rows];
       } else {
@@ -89,8 +94,29 @@ export function parseToonToJson(toon: string): any {
     if (trimmed === "false") return false;
     if (trimmed === "[]") return [];
     if (trimmed === "{}") return {};
+    if ((trimmed.startsWith("{") && trimmed.endsWith("}")) ||
+      (trimmed.startsWith("[") && trimmed.endsWith("]"))) {
+      try { return JSON.parse(trimmed); } catch { }
+    }
     if (!isNaN(Number(trimmed)) && trimmed !== "") return Number(trimmed);
     return trimmed;
+  }
+
+  function splitRow(row: string): string[] {
+    const result: string[] = [];
+    let depth = 0, current = "";
+    for (const ch of row) {
+      if (ch === "{" || ch === "[") depth++;
+      else if (ch === "}" || ch === "]") depth--;
+      if (ch === "," && depth === 0) {
+        result.push(current.trim());
+        current = "";
+      } else {
+        current += ch;
+      }
+    }
+    if (current.trim()) result.push(current.trim());
+    return result;
   }
 
   function parseBlock(baseIndent: number): any {
@@ -130,7 +156,7 @@ export function parseToonToJson(toon: string): any {
 
       // Handle data rows for tabular array
       if (isArray && arrayHeader) {
-        const rowValues = content.split(",").map(v => parseValue(v));
+        const rowValues = splitRow(content).map(v => parseValue(v));
         const item: any = {};
         arrayHeader.keys.forEach((key, i) => {
           item[key] = rowValues[i];
